@@ -20,6 +20,9 @@ public class Waits {
     WebDriver driver = WebDriverManager.chromedriver().create();
     @Test
     public void testExplicitWait() {
+        /*
+        * Explicit wait is used to wait for a certain condition to occur before proceeding further in the code.
+        * */
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/loading-images.html");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -30,6 +33,9 @@ public class Waits {
 
     @Test
     void testFluentWait() {
+        /*
+        * Fluent wait is used to wait for a condition to occur with a polling frequency.
+        * */
         driver.get(
                 "https://bonigarcia.dev/selenium-webdriver-java/loading-images.html");
         Wait<WebDriver> wait = new FluentWait<>(driver)
@@ -43,5 +49,18 @@ public class Waits {
                 .containsIgnoringCase("landscape");
     }
 
+    @Test
+    void testImplicitWait() {
+        /*
+        * Implicit wait is used to wait for a certain amount of time before proceeding further in the code.
+         */
+        driver.get(
+                "https://bonigarcia.dev/selenium-webdriver-java/loading-images.html");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        WebElement landscape = driver.findElement(By.id("landscape"));
+        assertThat(landscape.getAttribute("src"))
+                .containsIgnoringCase("landscape");
+    }
 
 }
