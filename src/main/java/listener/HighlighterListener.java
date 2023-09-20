@@ -5,31 +5,12 @@ import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.events.WebDriverListener;
 
 public class HighlighterListener implements WebDriverListener {
-    private final WebDriver driver;
-    private final JavascriptExecutor jsExecutor;
 
-    public HighlighterListener(WebDriver driver) {
-        this.driver = driver;
-        this.jsExecutor = (JavascriptExecutor) driver;
-    }
-
-
-    public void beforeFindElement(By by, WebElement element, WebDriver driver) {
-        if (element != null) {
-            highlightElement(element);
-        }
-    }
-
-    @Override
-    public void afterFindElement(By by, WebElement element, WebDriver driver) {
-        if (element != null) {
-            highlightElement(element);
-        }
-    }
-
-    private void highlightElement(WebElement element) {
+    private void highlightElement(WebElement element, WebDriver driver) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         String originalStyle = element.getAttribute("style");
         String newStyle = "border: 2px solid red; background-color: yellow;";
+
         jsExecutor.executeScript("arguments[0].setAttribute('style', arguments[1]);", element, newStyle);
 
         try {
@@ -41,4 +22,8 @@ public class HighlighterListener implements WebDriverListener {
         jsExecutor.executeScript("arguments[0].setAttribute('style', arguments[1]);", element, originalStyle);
     }
 
+    @Override
+    public void afterFindElement(WebDriver driver, By locator, WebElement result) {
+        highlightElement(result, driver);
+    }
 }

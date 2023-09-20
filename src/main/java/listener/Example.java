@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.events.WebDriverListener;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -14,10 +16,10 @@ public class Example {
 
     @BeforeEach
     void setup() {
-        driver = WebDriverManager.chromedriver().create();
-        HighlighterListener eventListener = new HighlighterListener(driver);
-        EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
-        eventDriver.register(eventListener);
+        WebDriver originalDriver = WebDriverManager.chromedriver().create();
+        HighlighterListener eventListener = new HighlighterListener();
+        driver =  new EventFiringDecorator(eventListener).decorate(originalDriver);
+
     }
 
     @Test
