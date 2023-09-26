@@ -17,6 +17,8 @@ import java.util.concurrent.TimeoutException;
 public class ConsoleListener {
     WebDriver driver;
 
+
+
     @Test
     public void testConsoleListener() throws ExecutionException, InterruptedException, TimeoutException {
         driver = WebDriverManager.chromedriver().create();
